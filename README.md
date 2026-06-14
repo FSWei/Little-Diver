@@ -130,7 +130,7 @@ cd "Little Diver"
 │  IO1  (INFO_SDA)  │  IO2  (INFO_SCL)               │
 │  IO6  (GAME_SDA)  │  IO7  (GAME_SCL)               │
 │  IO9  (DO_PIN)    │  IO10 (AO_PIN)                 │
-│  IO8  (传感器ADC)  │  ...                           │
+│  传感器信号→IO10   │  ...                           │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -158,7 +158,7 @@ cd "Little Diver"
 
 | 传感器引脚 | 连接到ESP32 | 说明 |
 |---------|-----------|------|
-| 信号(S) | **IO8** | 模拟输入（ADC1_CH7） |
+| 信号(S) | **IO10** | 模拟输入 |
 | VCC | 3V3 | 电源+3.3V |
 | GND | GND | 电源地 |
 
@@ -183,7 +183,7 @@ cd "Little Diver"
      SCL/SDA(屏1用区分)  │       │         SCL/SDA不同
               [屏2单独] ─┤IO1    │
                         │IO2    │───── [屏2]
-                   ADC ─┤IO8    │ (传感器信号)
+                   ADC ─┤IO10   │ (传感器信号)
                         │IO9    │─── 蜂鸣器(可选)
                         │IO10   │
                         └───────┘
@@ -468,14 +468,14 @@ fatal error: Adafruit_SSD1306.h: No such file or directory
 **调试步骤**：
 
 1. **确认传感器接线**
-   - 信号引脚 → IO8
+   - 信号引脚 → IO10
    - VCC → 3V3, GND → GND
 
 2. **添加调试代码**（在 `main.cpp` 的 loop() 开始）：
    ```cpp
    static int lastPrint = 0;
    if (millis() - lastPrint > 500) {
-       int sensorValue = analogRead(8);
+      int sensorValue = analogRead(10);
        Serial.println(sensorValue);  // 打印ADC值
        lastPrint = millis();
    }
